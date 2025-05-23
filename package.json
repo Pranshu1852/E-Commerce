@@ -14,10 +14,19 @@
     "format:staged": "git diff --cached --name-only --diff-filter=ACM | grep '\\.\\(js\\|jsx\\|ts\\|tsx\\|css\\|scss\\|json\\)$' | xargs prettier --write"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.0",
+    "@reduxjs/toolkit": "^2.8.2",
     "eslint-plugin-import": "^2.31.0",
+    "i18next": "^25.2.0",
+    "i18next-browser-languagedetector": "^8.1.0",
+    "i18next-http-backend": "^3.0.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-error-boundary": "^6.0.0",
+    "react-i18next": "^15.5.2",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.0"
   },
   "devDependencies": {
