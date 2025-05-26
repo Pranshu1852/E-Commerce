@@ -2,6 +2,7 @@ import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import type { SignUpData } from '../../../types/Authtypes';
 import type { InputRef } from '../../../types/Reftype';
 import InputField from '../../Formvalidation/InputField';
 
@@ -14,22 +15,29 @@ function Signup() {
     setPassword(event.target.value);
   }
 
-  const registerRef = (name: string) => (element: InputRef | null) => {
-    formRefs.current[name] = element;
-  };
+  const registerRef =
+    (name: keyof SignUpData | 'confirmpassword') =>
+    (element: InputRef | null) => {
+      formRefs.current[name] = element;
+    };
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     let isValid = true;
-    const data: Record<string, string> = {};
-    for (const key of Object.keys(formRefs.current)) {
-      if (formRefs.current[key] && formRefs.current[key].validation().isError) {
+    const data: Record<keyof SignUpData, string> = {
+      username: '',
+      email: '',
+      password: '',
+    };
+
+    for (const [key, refObj] of Object.entries(formRefs.current)) {
+      if (refObj && refObj.validation().isError) {
         isValid = false;
       }
 
-      if (formRefs.current[key]) {
-        data[key] = formRefs.current[key].value;
+      if (refObj && key !== 'confirmpassword') {
+        data[key as keyof SignUpData] = refObj.value;
       }
     }
 

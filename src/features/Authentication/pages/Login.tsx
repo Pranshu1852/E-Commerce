@@ -2,6 +2,8 @@ import { useRef, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { handleLogin } from '../../../services/authApis';
+import type { LoginData } from '../../../types/Authtypes';
 import type { InputRef } from '../../../types/Reftype';
 import InputField from '../../Formvalidation/InputField';
 
@@ -9,7 +11,7 @@ function Login() {
   const { t } = useTranslation();
   const formRefs = useRef<Record<string, InputRef | null>>({});
 
-  const registerRef = (name: string) => (element: InputRef | null) => {
+  const registerRef = (name: keyof LoginData) => (element: InputRef | null) => {
     formRefs.current[name] = element;
   };
 
@@ -17,20 +19,25 @@ function Login() {
     event.preventDefault();
 
     let isValid = true;
-    const data: Record<string, string> = {};
-    for (const key of Object.keys(formRefs.current)) {
-      if (formRefs.current[key] && formRefs.current[key].validation().isError) {
+    const data: Record<keyof LoginData, string> = {
+      identifier: '',
+      password: '',
+    };
+    for (const [key, refObj] of Object.entries(formRefs.current)) {
+      if (refObj && refObj.validation().isError) {
         isValid = false;
       }
 
-      if (formRefs.current[key]) {
-        data[key] = formRefs.current[key].value;
+      if (refObj) {
+        data[key as keyof LoginData] = refObj.value;
       }
     }
 
     if (!isValid) {
       return;
     }
+
+    handleLogin(data);
   }
 
   return (
@@ -42,7 +49,7 @@ function Login() {
       <div className="flex flex-col gap-7 w-full">
         <InputField
           style={{ backgroundColor: 'white' }}
-          ref={registerRef('username')}
+          ref={registerRef('identifier')}
           label="UserName"
           id="username"
           name="username"
