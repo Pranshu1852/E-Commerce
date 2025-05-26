@@ -2,6 +2,7 @@ import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { handleSignup } from '../../../services/authApis';
 import type { SignUpData } from '../../../types/Authtypes';
 import type { InputRef } from '../../../types/Reftype';
 import InputField from '../../Formvalidation/InputField';
@@ -44,6 +45,8 @@ function Signup() {
     if (!isValid) {
       return;
     }
+
+    handleSignup(data);
   }
   return (
     <form
