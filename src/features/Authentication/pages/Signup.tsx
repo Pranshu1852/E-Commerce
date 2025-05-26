@@ -1,4 +1,4 @@
-import { useRef, type FormEvent } from 'react';
+import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +7,12 @@ import InputField from '../../Formvalidation/InputField';
 
 function Signup() {
   const { t } = useTranslation();
+  const [password, setPassword] = useState('');
   const formRefs = useRef<Record<string, InputRef | null>>({});
+
+  function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
+    setPassword(event.target.value);
+  }
 
   const registerRef = (name: string) => (element: InputRef | null) => {
     formRefs.current[name] = element;
@@ -81,6 +86,7 @@ function Signup() {
           name="password"
           placeholder="Enter your password..."
           validationMode="all"
+          onChange={handlePasswordChange}
           rules={{
             required: {
               value: true,
@@ -101,10 +107,10 @@ function Signup() {
               value: true,
               message: t('This is a required field.'),
             },
-            // pattern: {
-            //   value: formRefs.current['password']?.value,
-            //   message: t('Password does not match.')
-            // }
+            pattern: {
+              value: password,
+              message: t('Password does not match.'),
+            },
           }}
         />
       </div>

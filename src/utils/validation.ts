@@ -30,7 +30,7 @@ function ErrorCheck(
     case 'pattern': {
       if (typeof value === 'object' || typeof value === 'string') {
         if (typeof value === 'string') {
-          return !value.match(inputValue);
+          return !(value === inputValue);
         }
         return !value.test(inputValue);
       }

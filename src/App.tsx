@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     i18n.changeLanguage(language);
     document.body.dir = i18n.dir();
-  }, [i18n, language]);
+  }, [i18n, i18n.language, language]);
 
   return (
     <div className="">
