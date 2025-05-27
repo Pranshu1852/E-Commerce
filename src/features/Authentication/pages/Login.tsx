@@ -65,6 +65,7 @@ function Login() {
         <InputField
           style={{ backgroundColor: 'white' }}
           ref={registerRef('password')}
+          type="password"
           label="Password"
           id="password"
           name="password"

@@ -95,6 +95,7 @@ function Signup() {
           label="Password"
           id="password"
           name="password"
+          type="password"
           placeholder="Enter your password..."
           validationMode="all"
           onChange={handlePasswordChange}
@@ -108,6 +109,7 @@ function Signup() {
         <InputField
           style={{ backgroundColor: 'white' }}
           ref={registerRef('confirmpassword')}
+          type="password"
           label="Confirm Password"
           id="confirmpassword"
           name="confirmpassword"

@@ -1,9 +1,12 @@
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
   useEffect,
   useImperativeHandle,
   useState,
   type ChangeEvent,
   type FocusEvent,
+  type HTMLInputTypeAttribute,
 } from 'react';
 
 import type { InputRef } from '../../types/Reftype';
@@ -25,7 +28,8 @@ type InputFieldProps = {
   rules?: Record<string, Rules>;
   validationMode: 'onChange' | 'onBlur' | 'all';
   ref: (element: InputRef | null) => void;
-} & Omit<React.HTMLProps<HTMLInputElement>, 'ref'>;
+  type?: HTMLInputTypeAttribute;
+} & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'type'>;
 
 function InputField({
   label,
@@ -37,10 +41,12 @@ function InputField({
   validationMode,
   ref,
   value: data,
+  type: initType = 'text',
   ...props
 }: InputFieldProps) {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
+  const [inputType, setInputType] = useState(initType);
 
   useEffect(() => {
     if (data) {
@@ -115,14 +121,32 @@ function InputField({
           )}
         </label>
       )}
-      <input
-        className="border-[1.5px] border-black rounded-md p-2 bg-transparent"
-        value={value}
-        placeholder={placeholder}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        {...props}
-      />
+      <div className="flex flex-row justify-between w-full relative">
+        <input
+          className="border-[1.5px] border-black rounded-md p-2 bg-transparent w-full"
+          value={value}
+          placeholder={placeholder}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          type={inputType}
+          {...props}
+        />
+        {initType === 'password' && (
+          <button
+            type="button"
+            onClick={() => {
+              setInputType(inputType === 'password' ? 'text' : 'password');
+            }}
+            className="absolute right-[2%] top-[20%]"
+          >
+            {inputType === 'password' ? (
+              <VisibilityIcon />
+            ) : (
+              <VisibilityOffIcon />
+            )}
+          </button>
+        )}
+      </div>
       {error !== '' && (
         <p className="text-red-600 font-medium text-sm">{error}</p>
       )}
