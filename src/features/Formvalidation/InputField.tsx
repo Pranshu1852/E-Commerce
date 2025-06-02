@@ -134,6 +134,7 @@ function InputField({
         {initType === 'password' && (
           <button
             type='button'
+            aria-label='eye button'
             onClick={() => {
               setInputType(inputType === 'password' ? 'text' : 'password');
             }}
