@@ -111,16 +111,16 @@ function RadioGroupField({
   }
 
   return (
-    <div className="flex flex-col gap-2 self-start w-full">
+    <div className='flex flex-col gap-2 self-start w-full'>
       {label && (
-        <label className="text-lg font-medium" htmlFor={id}>
+        <label className='text-lg font-medium' htmlFor={id}>
           {label}
           {rules && rules.required && rules.required.value && (
-            <span className="text-red-600"> *</span>
+            <span className='text-red-600'> *</span>
           )}
         </label>
       )}
-      <div className="flex flex-row gap-10 items-center flex-wrap">
+      <div className='flex flex-row gap-10 items-center flex-wrap'>
         {options.map((element) => {
           return (
             <RadioField
@@ -136,7 +136,7 @@ function RadioGroupField({
         })}
       </div>
       {error !== '' && (
-        <p className="text-red-600 font-medium text-sm">{error}</p>
+        <p className='text-red-600 font-medium text-sm'>{error}</p>
       )}
     </div>
   );
@@ -160,11 +160,11 @@ function RadioField({
   data,
 }: RadioFieldProps) {
   return (
-    <div className="flex flex-row gap-3 items-center font-medium">
+    <div className='flex flex-row gap-3 items-center font-medium'>
       <input
         id={value}
         name={name}
-        type="radio"
+        type='radio'
         value={value}
         onChange={changeEvent}
         onBlur={blurEvent}

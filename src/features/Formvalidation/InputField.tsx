@@ -112,18 +112,18 @@ function InputField({
   }
 
   return (
-    <div className="flex flex-col gap-2 self-start w-full">
+    <div className='flex flex-col gap-2 self-start w-full'>
       {label && (
-        <label className="text-lg font-medium" htmlFor={id}>
+        <label className='text-lg font-medium' htmlFor={id}>
           {label}
           {rules && rules.required && rules.required.value && (
-            <span className="text-red-600"> *</span>
+            <span className='text-red-600'> *</span>
           )}
         </label>
       )}
-      <div className="flex flex-row justify-between w-full relative">
+      <div className='flex flex-row justify-between w-full relative'>
         <input
-          className="border-[1.5px] border-black rounded-md p-2 bg-transparent w-full"
+          className='border-[1.5px] border-black rounded-md p-2 bg-transparent w-full'
           value={value}
           placeholder={placeholder}
           onChange={handleChange}
@@ -133,11 +133,11 @@ function InputField({
         />
         {initType === 'password' && (
           <button
-            type="button"
+            type='button'
             onClick={() => {
               setInputType(inputType === 'password' ? 'text' : 'password');
             }}
-            className="absolute right-[2%] top-[20%]"
+            className='absolute right-[2%] top-[20%]'
           >
             {inputType === 'password' ? (
               <VisibilityIcon />
@@ -148,7 +148,7 @@ function InputField({
         )}
       </div>
       {error !== '' && (
-        <p className="text-red-600 font-medium text-sm">{error}</p>
+        <p className='text-red-600 font-medium text-sm'>{error}</p>
       )}
     </div>
   );
