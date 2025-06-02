@@ -12,6 +12,7 @@ function Signup() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
+  const [isDisable, setIsDisable] = useState(false);
   const formRefs = useRef<Record<string, InputRef | null>>({});
 
   if (storageHandler.getStorage('token')) {
@@ -52,7 +53,9 @@ function Signup() {
       return;
     }
 
+    setIsDisable(true);
     const status = await handleSignup(data);
+    setIsDisable(false);
 
     if (status === 200) {
       navigate('/', { replace: true });
@@ -147,7 +150,8 @@ function Signup() {
         </Link>
         <button
           type='submit'
-          className='py-2 px-4 font-semibold text-white bg-cyan-800 rounded-md'
+          className={`py-2 px-4 font-semibold text-white ${isDisable ? 'bg-cyan-500' : 'bg-cyan-800'} rounded-md`}
+          disabled={isDisable}
         >
           SignUp
         </button>

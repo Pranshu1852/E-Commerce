@@ -1,4 +1,4 @@
-import { useRef, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ import InputField from '../../Formvalidation/InputField';
 function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [isDisable, setIsDisable] = useState(false);
   const formRefs = useRef<Record<string, InputRef | null>>({});
 
   if (storageHandler.getStorage('token')) {
@@ -43,7 +44,9 @@ function Login() {
       return;
     }
 
+    setIsDisable(true);
     const status = await handleLogin(data);
+    setIsDisable(false);
 
     if (status === 200) {
       navigate('/', { replace: true });
@@ -99,7 +102,8 @@ function Login() {
         </Link>
         <button
           type='submit'
-          className='py-2 px-4 font-semibold text-white bg-cyan-800 rounded-md'
+          className={`py-2 px-4 font-semibold text-white ${isDisable ? 'bg-cyan-500' : 'bg-cyan-800'} rounded-md`}
+          disabled={isDisable}
         >
           Login
         </button>
