@@ -26,8 +26,18 @@ function LanguageSelector() {
       defaultValue='en'
       size='small'
       sx={{
-        color: 'black',
+        color: 'white',
         border: 'none',
+        '& .MuiSelect-select': {
+          color: 'white',
+          fontWeight: '600',
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          borderColor: 'white',
+        },
+        '& .MuiSvgIcon-root': {
+          color: 'white',
+        },
       }}
       value={language}
       onChange={(event) => {
