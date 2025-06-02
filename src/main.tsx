@@ -5,9 +5,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App.tsx';
+import { NavigationBridgeComponent } from './components/NavigationBridge.tsx';
 import { store } from './store/store.ts';
 import './lib/i18n.ts';
-import { NavigationBridgeComponent } from './components/NavigationBridge.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
