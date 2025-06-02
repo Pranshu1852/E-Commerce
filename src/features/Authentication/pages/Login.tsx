@@ -1,6 +1,6 @@
 import { useRef, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { handleLogin } from '../../../services/authApis';
 import type { LoginData } from '../../../types/Authtypes';
@@ -9,13 +9,14 @@ import InputField from '../../Formvalidation/InputField';
 
 function Login() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const formRefs = useRef<Record<string, InputRef | null>>({});
 
   const registerRef = (name: keyof LoginData) => (element: InputRef | null) => {
     formRefs.current[name] = element;
   };
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     let isValid = true;
@@ -37,58 +38,68 @@ function Login() {
       return;
     }
 
-    handleLogin(data);
+    const status = await handleLogin(data);
+
+    if (status === 200) {
+      navigate('/', { replace: true });
+    }
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col items-center gap-10 m-auto mt-7 bg-cyan-100 border-2 border-cyan-900 p-10 w-[80%] max-w-[550px] rounded-xl shadow-lg"
-    >
-      <h2 className="text-3xl font-semibold text-cyan-700">Login</h2>
-      <div className="flex flex-col gap-7 w-full">
-        <InputField
-          style={{ backgroundColor: 'white' }}
-          ref={registerRef('identifier')}
-          label="UserName"
-          id="username"
-          name="username"
-          placeholder="Enter your username..."
-          validationMode="all"
-          rules={{
-            required: {
-              value: true,
-              message: t('This is a required field.'),
-            },
-          }}
-        />
-        <InputField
-          style={{ backgroundColor: 'white' }}
-          ref={registerRef('password')}
-          type="password"
-          label="Password"
-          id="password"
-          name="password"
-          placeholder="Enter your password..."
-          validationMode="all"
-          rules={{
-            required: {
-              value: true,
-              message: t('This is a required field.'),
-            },
-          }}
-        />
-      </div>
-      <Link to="/signup" className="font-medium text-lg text-cyan-700">
-        Create a new account
-      </Link>
-      <button
-        type="submit"
-        className="py-2 px-4 font-semibold text-white bg-cyan-800 rounded-md"
+    <div className='h-screen flex'>
+      <form
+        onSubmit={handleSubmit}
+        className='flex flex-col items-center gap-10 m-auto bg-cyan-200 border-2 border-cyan-900 p-10 w-[80%] max-w-[550px] rounded-xl shadow-lg'
       >
-        Login
-      </button>
-    </form>
+        <h2 className='text-3xl font-semibold text-cyan-700'>Login</h2>
+        <div className='flex flex-col gap-7 w-full'>
+          <InputField
+            style={{ backgroundColor: 'white' }}
+            ref={registerRef('identifier')}
+            label='UserName'
+            id='username'
+            name='username'
+            placeholder='Enter your username...'
+            validationMode='all'
+            rules={{
+              required: {
+                value: true,
+                message: t('This is a required field.'),
+              },
+            }}
+          />
+          <InputField
+            style={{ backgroundColor: 'white' }}
+            ref={registerRef('password')}
+            type='password'
+            label='Password'
+            id='password'
+            name='password'
+            placeholder='Enter your password...'
+            validationMode='all'
+            rules={{
+              required: {
+                value: true,
+                message: t('This is a required field.'),
+              },
+              minLength: {
+                value: 8,
+                message: t('Password should be of minimum 8 length.'),
+              },
+            }}
+          />
+        </div>
+        <Link to='/signup' className='font-medium text-lg text-cyan-700'>
+          Create a new account
+        </Link>
+        <button
+          type='submit'
+          className='py-2 px-4 font-semibold text-white bg-cyan-800 rounded-md'
+        >
+          Login
+        </button>
+      </form>
+    </div>
   );
 }
 

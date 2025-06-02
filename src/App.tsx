@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
@@ -24,14 +25,15 @@ function App() {
   }, [i18n, i18n.language, language]);
 
   return (
-    <div className="">
+    <div className='min-h-screen'>
+      <Toaster />
       <Routes>
-        <Route path="/" element={<MainLayout />}>
+        <Route path='/' element={<MainLayout />}>
           <Route index element={<h1>Home</h1>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
         </Route>
-        <Route path="/*" element={<NotFound />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/*' element={<NotFound />} />
       </Routes>
     </div>
   );
