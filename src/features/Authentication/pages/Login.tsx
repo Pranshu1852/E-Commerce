@@ -1,16 +1,21 @@
 import { useRef, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import { handleLogin } from '../../../services/authApis';
 import type { LoginData } from '../../../types/Authtypes';
 import type { InputRef } from '../../../types/Reftype';
+import storageHandler from '../../../utils/storageHandler';
 import InputField from '../../Formvalidation/InputField';
 
 function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const formRefs = useRef<Record<string, InputRef | null>>({});
+
+  if (storageHandler.getStorage('token')) {
+    return <Navigate to={'/'} replace />;
+  }
 
   const registerRef = (name: keyof LoginData) => (element: InputRef | null) => {
     formRefs.current[name] = element;

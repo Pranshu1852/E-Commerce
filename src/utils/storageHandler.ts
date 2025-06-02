@@ -7,7 +7,7 @@ const storageHandler: StorageHandler = {
   getStorage(key: string) {
     return localStorage.getItem(key)
       ? JSON.parse(localStorage.getItem(key)!)
-      : [];
+      : null;
   },
 
   setStorage(key: string, val) {

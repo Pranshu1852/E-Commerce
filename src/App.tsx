@@ -7,8 +7,10 @@ import { Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import Login from './features/Authentication/pages/Login';
 import Signup from './features/Authentication/pages/Signup';
+import Home from './features/Home/pages/Home';
 import MainLayout from './layouts/MainLayout';
 import type { StateType } from './store/store';
+import AuthWrapper from './wrapper/AuthWrapper';
 
 function App() {
   const { i18n } = useTranslation();
@@ -28,8 +30,15 @@ function App() {
     <div className='min-h-screen'>
       <Toaster />
       <Routes>
-        <Route path='/' element={<MainLayout />}>
-          <Route index element={<h1>Home</h1>} />
+        <Route
+          path='/'
+          element={
+            <AuthWrapper>
+              <MainLayout />
+            </AuthWrapper>
+          }
+        >
+          <Route index element={<Home />} />
         </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />

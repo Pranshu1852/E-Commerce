@@ -50,7 +50,7 @@ export async function handleSignup(data: SignUpData) {
   }
 }
 
-export async function verifyUser(token: string) {
+export async function getUser(token: string) {
   try {
     const response = await instance.get('/users/me', {
       headers: {

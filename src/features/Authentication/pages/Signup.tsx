@@ -1,10 +1,11 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import { handleSignup } from '../../../services/authApis';
 import type { SignUpData } from '../../../types/Authtypes';
 import type { InputRef } from '../../../types/Reftype';
+import storageHandler from '../../../utils/storageHandler';
 import InputField from '../../Formvalidation/InputField';
 
 function Signup() {
@@ -12,6 +13,10 @@ function Signup() {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const formRefs = useRef<Record<string, InputRef | null>>({});
+
+  if (storageHandler.getStorage('token')) {
+    return <Navigate to={'/'} replace />;
+  }
 
   function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
