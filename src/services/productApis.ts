@@ -1,9 +1,12 @@
+import type { ProductSearchFilterType } from '../types/ProductTypes';
+
 import { instance } from './axiosInstance';
 
-export async function getAllProducts() {
+export async function getProducts(filterQuery: ProductSearchFilterType) {
   try {
-    const response = await instance.get('/products?populate=*');
-
+    const response = await instance.get(
+      `/products?filters[$or][0][title][$containsi]=${filterQuery.search || ''}&filters[$or][1][description][$containsi]=${filterQuery.search || ''}&populate=*`
+    );
     return response.data;
   } catch (error) {
     console.error(error);

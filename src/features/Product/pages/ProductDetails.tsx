@@ -31,7 +31,7 @@ function ProductDetails() {
   }
 
   return (
-    <div className='flex flex-col md:flex-row max-w-[1200px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
+    <div className='flex flex-col md:flex-row max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
       <img
         className='w-full md:w-[55%]'
         src={product.image.url}
@@ -55,7 +55,7 @@ function ProductDetails() {
         <span className='text-5xl font-semibold text-cyan-500'>
           &#8377; {product.price}
         </span>
-        <p className='text-stone-500 font-medium text-xl leading-10'>
+        <p className='text-stone-500 font-medium text-lg leading-8 whitespace-pre text-wrap'>
           {product.description}
         </p>
       </div>

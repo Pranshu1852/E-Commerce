@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
-import { getAllProducts } from '../../../services/productApis';
-import type { ProductType } from '../../../types/ProductTypes';
+import useDebounce from '../../../hooks/useDebounce';
+import { getProducts } from '../../../services/productApis';
+import type {
+  ProductSearchFilterType,
+  ProductType,
+} from '../../../types/ProductTypes';
 import ProductCard from '../components/ProductCard';
 
 function Home() {
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [searchParams] = useSearchParams();
+  const debounceFunc = useDebounce<ProductSearchFilterType>(fetchProducts, 300);
 
-  async function fetchProducts() {
+  async function fetchProducts(filterQuery: ProductSearchFilterType) {
     try {
-      const response = await getAllProducts();
+      const response = await getProducts(filterQuery);
 
       setProducts(response.data);
     } catch (error) {
@@ -19,8 +25,16 @@ function Home() {
   }
 
   useEffect(() => {
-    fetchProducts();
-  }, [products]);
+    const filterQuery: ProductSearchFilterType = {
+      search: searchParams.get('search') || '',
+      category: searchParams.get('category') || '',
+      brand: searchParams.get('brand') || '',
+      minPrice: searchParams.get('minPrice') || '',
+      maxPrice: searchParams.get('maxPrice') || '',
+    };
+
+    debounceFunc(filterQuery);
+  }, [searchParams]);
 
   return (
     <div className='flex flex-col gap-10'>

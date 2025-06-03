@@ -14,3 +14,11 @@ export interface ProductType {
     name: string;
   };
 }
+
+export interface ProductSearchFilterType {
+  search: string;
+  category: string;
+  brand: string;
+  minPrice: string;
+  maxPrice: string;
+}
