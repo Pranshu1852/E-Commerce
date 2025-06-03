@@ -27,7 +27,7 @@ function Home() {
       <div className='grid grid-cols-autofill-250 p-10 gap-10'>
         {products.map((product, index) => {
           return (
-            <Link key={index} to={`/${product.documentId}`}>
+            <Link key={index} to={`/products/${product.documentId}`}>
               <ProductCard
                 title={product.title}
                 description={product.description}

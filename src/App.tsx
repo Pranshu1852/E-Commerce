@@ -10,6 +10,7 @@ import NotFound from './components/NotFound';
 import Login from './features/Authentication/pages/Login';
 import Signup from './features/Authentication/pages/Signup';
 import Home from './features/Home/pages/Home';
+import ProductDetails from './features/Product/pages/ProductDetails';
 import MainLayout from './layouts/MainLayout';
 import type { StateType } from './store/store';
 import { sharedRef } from './utils/sharedRef';
@@ -50,6 +51,7 @@ function App() {
             }
           >
             <Route index element={<Home />} />
+            <Route path='/products/:id' element={<ProductDetails />} />
           </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />

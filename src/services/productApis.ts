@@ -9,3 +9,13 @@ export async function getAllProducts() {
     console.error(error);
   }
 }
+
+export async function getProductDetail(id: string) {
+  try {
+    const response = await instance.get(`/products/${id}?populate=*`);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
