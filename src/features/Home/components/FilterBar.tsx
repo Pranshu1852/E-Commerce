@@ -1,16 +1,42 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import type { ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import filterIcon from '../../../assets/filter.svg';
 import useToggle from '../../../hooks/useToggle';
+import { getAllBrands, getAllCategories } from '../../../services/productApis';
 
 import FilterSelectField from './FilterSelectField';
 
 function FilterBar() {
   const { isOpen, toggle } = useToggle();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [categories, setCategories] = useState<Array<{ name: string }>>([]);
+  const [brands, setBrands] = useState<Array<{ name: string }>>([]);
+
+  async function fetchCategory() {
+    try {
+      const response = await getAllCategories();
+      setCategories(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchBrand() {
+    try {
+      const response = await getAllBrands();
+      setBrands(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategory();
+    fetchBrand();
+  }, []);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const filterQuery = event.target.value;
@@ -26,7 +52,7 @@ function FilterBar() {
   }
 
   return (
-    <div className='flex flex-col gap-5 p-5 shadow-md rounded-md'>
+    <div className='flex flex-col gap-5 p-5 shadow-[0px_0px_7px_-1px_rgba(0,0,0,0.2)] rounded-md'>
       <button
         onClick={toggle}
         className='flex flex-row justify-between items-center gap-2'
@@ -48,6 +74,12 @@ function FilterBar() {
                 label: 'All Categories',
                 value: 'all',
               },
+              ...categories.map((category) => {
+                return {
+                  label: category.name,
+                  value: category.name,
+                };
+              }),
             ]}
             onChange={handleChange}
           />
@@ -60,6 +92,12 @@ function FilterBar() {
                 label: 'All Brands',
                 value: 'all',
               },
+              ...brands.map((brand) => {
+                return {
+                  label: brand.name,
+                  value: brand.name,
+                };
+              }),
             ]}
             onChange={handleChange}
           />

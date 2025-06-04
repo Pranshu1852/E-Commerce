@@ -36,7 +36,7 @@ function Home() {
   }, [searchParams]);
 
   return (
-    <div className='flex flex-col gap-10  p-10 w-full'>
+    <div className='flex flex-col gap-10 px-10 w-full'>
       <FilterBar />
       <div className='grid grid-cols-autofill-250 gap-10'>
         {products.map((product, index) => {

@@ -22,3 +22,21 @@ export async function getProductDetail(id: string) {
     console.error(error);
   }
 }
+
+export async function getAllCategories() {
+  try {
+    const response = await instance.get(`/categories`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getAllBrands() {
+  try {
+    const response = await instance.get(`/brands`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
