@@ -15,10 +15,11 @@ export interface ProductType {
   };
 }
 
-export interface ProductSearchFilterType {
+export interface FilterQueryType {
   search: string;
   category: string;
   brand: string;
   minPrice: string;
   maxPrice: string;
+  sort: string;
 }
