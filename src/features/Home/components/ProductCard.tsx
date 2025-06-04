@@ -19,7 +19,7 @@ function ProductCard({
     <div className='flex flex-col shadow-md rounded-md hover:shadow-lg transition-all duration-150'>
       <div className='overflow-hidden'>
         <img
-          className='rounded-t-md hover:scale-105 transition-all duration-150'
+          className='rounded-t-md h-72 object-cover w-full hover:scale-105 transition-all duration-150'
           src={image}
           alt={title}
           loading='lazy'

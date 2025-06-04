@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -6,15 +6,20 @@ import { useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 
 import ErrorFallBack from './components/ErrorFallback';
+import Loading from './components/Loading';
 import NotFound from './components/NotFound';
 import Login from './features/Authentication/pages/Login';
-import Signup from './features/Authentication/pages/Signup';
 import Home from './features/Home/pages/Home';
-import ProductDetails from './features/Product/pages/ProductDetails';
 import MainLayout from './layouts/MainLayout';
 import type { StateType } from './store/store';
 import { sharedRef } from './utils/sharedRef';
 import AuthWrapper from './wrapper/AuthWrapper';
+
+const ProductDetails = lazy(
+  () => import('./features/Product/pages/ProductDetails')
+);
+
+const Signup = lazy(() => import('./features/Authentication/pages/Signup'));
 
 function App() {
   const { i18n } = useTranslation();
@@ -41,22 +46,24 @@ function App() {
     >
       <div className='min-h-screen'>
         <Toaster />
-        <Routes>
-          <Route
-            path='/'
-            element={
-              <AuthWrapper>
-                <MainLayout />
-              </AuthWrapper>
-            }
-          >
-            <Route index element={<Home />} />
-            <Route path='/products/:id' element={<ProductDetails />} />
-          </Route>
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/*' element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route
+              path='/'
+              element={
+                <AuthWrapper>
+                  <MainLayout />
+                </AuthWrapper>
+              }
+            >
+              <Route index element={<Home />} />
+              <Route path='/products/:id' element={<ProductDetails />} />
+            </Route>
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/*' element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </div>
     </ErrorBoundary>
   );

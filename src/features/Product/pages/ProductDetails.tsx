@@ -33,7 +33,7 @@ function ProductDetails() {
   return (
     <div className='flex flex-col md:flex-row max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
       <img
-        className='w-full md:w-[55%]'
+        className='w-full object-cover md:min-w-[55%]'
         src={product.image.url}
         alt={product.title}
       />

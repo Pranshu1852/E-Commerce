@@ -1,9 +1,12 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useSearchParams } from 'react-router-dom';
 
 import filterIcon from '../../../assets/filter.svg';
+import Loading from '../../../components/Loading';
+import useFetch from '../../../hooks/useFetch';
 import useToggle from '../../../hooks/useToggle';
 import { getAllBrands, getAllCategories } from '../../../services/productApis';
 
@@ -12,30 +15,20 @@ import FilterSelectField from './FilterSelectField';
 function FilterBar() {
   const { isOpen, toggle } = useToggle();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [categories, setCategories] = useState<Array<{ name: string }>>([]);
-  const [brands, setBrands] = useState<Array<{ name: string }>>([]);
-
-  async function fetchCategory() {
-    try {
-      const response = await getAllCategories();
-      setCategories(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function fetchBrand() {
-    try {
-      const response = await getAllBrands();
-      setBrands(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    fetchCategory();
-    fetchBrand();
+  const { showBoundary } = useErrorBoundary();
+  const {
+    data: categories,
+    isLoading: categoryLoading,
+    isError: categoryError,
+  } = useFetch<Array<{ name: string }>>(async () => {
+    return await getAllCategories();
+  }, []);
+  const {
+    data: brands,
+    isLoading: brandsLoading,
+    isError: brandsError,
+  } = useFetch<Array<{ name: string }>>(async () => {
+    return await getAllBrands();
   }, []);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -49,6 +42,18 @@ function FilterBar() {
         setSearchParams(searchParams);
       }
     }
+  }
+
+  if (categoryError || brandsError) {
+    showBoundary('Something Went Wrong.');
+  }
+
+  if (!categories || !brands) {
+    return;
+  }
+
+  if (brandsLoading || categoryLoading) {
+    return <Loading />;
   }
 
   return (
@@ -133,11 +138,11 @@ function FilterBar() {
               },
               {
                 label: 'Price: Low to High',
-                value: 'price:desc',
+                value: 'price:asc',
               },
               {
                 label: 'Price: High to Low',
-                value: 'price:asc',
+                value: 'price:desc',
               },
               {
                 label: 'Rating',
