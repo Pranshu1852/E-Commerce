@@ -1,3 +1,4 @@
+import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
 import useFetch from '../../../hooks/useFetch';
@@ -6,6 +7,7 @@ import type { ProductType } from '../../../types/ProductTypes';
 
 function ProductDetails() {
   const { id } = useParams();
+  const { showBoundary } = useErrorBoundary();
   const {
     data: product,
     isLoading,
@@ -17,7 +19,11 @@ function ProductDetails() {
     return await getProductDetail(id);
   }, [id]);
 
-  if (isLoading || isError || !product) {
+  if (isError) {
+    showBoundary('Something Went Wrong.');
+  }
+
+  if (isLoading || !product) {
     return;
   }
 

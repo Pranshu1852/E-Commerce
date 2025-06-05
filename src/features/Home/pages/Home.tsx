@@ -1,3 +1,4 @@
+import { useErrorBoundary } from 'react-error-boundary';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import useDebounce from '../../../hooks/useDebounce';
@@ -9,6 +10,7 @@ import ProductCard from '../components/ProductCard';
 
 function Home() {
   const [searchParams] = useSearchParams();
+  const { showBoundary } = useErrorBoundary();
   const debounceFunc = useDebounce(fetchProducts, 300);
   const {
     data: products,
@@ -42,7 +44,11 @@ function Home() {
     }
   }
 
-  if (isLoading || isError || !products) {
+  if (isError) {
+    showBoundary('Something Went Wrong.');
+  }
+
+  if (isLoading || !products) {
     return;
   }
 
