@@ -55,9 +55,9 @@ function Home() {
       {isLoading ? (
         <ShimmerProductCards />
       ) : products && products.length !== 0 ? (
-        products.map((product, index) => {
-          return (
-            <div className='grid grid-cols-autofill-250 gap-10'>
+        <div className='grid grid-cols-autofill-250 gap-10'>
+          {products.map((product, index) => {
+            return (
               <Link key={index} to={`/products/${product.documentId}`}>
                 <ProductCard
                   title={product.title ?? 'Product Title Not exist.'}
@@ -72,9 +72,9 @@ function Home() {
                   rating={product.rating ?? 0}
                 />
               </Link>
-            </div>
-          );
-        })
+            );
+          })}
+        </div>
       ) : (
         <h2 className='text-3xl font-semibold m-auto mt-10'>
           There are no Products available.
