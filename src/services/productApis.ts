@@ -1,4 +1,9 @@
-import type { FilterQueryType, ProductType } from '../types/ProductTypes';
+import type {
+  brandType,
+  categoryType,
+  FilterQueryType,
+  ProductType,
+} from '../types/ProductTypes';
 import { filterEndPoint } from '../utils/endPointHandler';
 
 import { instance } from './axiosInstance';
@@ -25,19 +30,21 @@ export async function getProductDetail(
   }
 }
 
-export async function getAllCategories() {
+export async function getAllCategories(): Promise<
+  Array<categoryType> | undefined
+> {
   try {
     const response = await instance.get(`/categories`);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function getAllBrands() {
+export async function getAllBrands(): Promise<Array<brandType> | undefined> {
   try {
     const response = await instance.get(`/brands`);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error);
   }

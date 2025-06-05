@@ -6,7 +6,7 @@ import type {
 
 export function mergeFilterSelectArray(
   initialArray: Array<filterSelectOptionType>,
-  fetchArray: Array<categoryType | brandType> | null
+  fetchArray: Array<categoryType | brandType> | undefined
 ): Array<filterSelectOptionType> {
   if (!fetchArray) {
     return initialArray;

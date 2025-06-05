@@ -1,14 +1,13 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useQuery } from '@tanstack/react-query';
 import { type ChangeEvent } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useSearchParams } from 'react-router-dom';
 
 import filterIcon from '../../../assets/filter.svg';
-import useFetch from '../../../hooks/useFetch';
 import useToggle from '../../../hooks/useToggle';
 import { getAllBrands, getAllCategories } from '../../../services/productApis';
-import type { brandType, categoryType } from '../../../types/ProductTypes';
 import { mergeFilterSelectArray } from '../../../utils/filterUtils';
 
 import FilterSelectField from './FilterSelectField';
@@ -21,16 +20,19 @@ function FilterBar() {
     data: categories,
     isLoading: categoryLoading,
     isError: categoryError,
-  } = useFetch<Array<categoryType>>(async () => {
-    return await getAllCategories();
-  }, []);
+  } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
+  });
+
   const {
     data: brands,
     isLoading: brandsLoading,
     isError: brandsError,
-  } = useFetch<Array<brandType>>(async () => {
-    return await getAllBrands();
-  }, []);
+  } = useQuery({
+    queryKey: ['brands'],
+    queryFn: getAllBrands,
+  });
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const filterQuery = event.target.value;
