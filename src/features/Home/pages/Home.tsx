@@ -1,13 +1,13 @@
 import { useErrorBoundary } from 'react-error-boundary';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import Loading from '../../../components/Loading';
 import useDebounce from '../../../hooks/useDebounce';
 import useFetch from '../../../hooks/useFetch';
 import { getProducts } from '../../../services/productApis';
 import type { FilterQueryType, ProductType } from '../../../types/ProductTypes';
 import FilterBar from '../components/FilterBar';
 import ProductCard from '../components/ProductCard';
+import ShimmerProductCards from '../components/ShimmerProductCards';
 
 function Home() {
   const [searchParams] = useSearchParams();
@@ -49,32 +49,32 @@ function Home() {
     showBoundary('Something Went Wrong.');
   }
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (!products) {
-    return;
-  }
-
   return (
     <div className='flex flex-col gap-10 px-10 w-full'>
       <FilterBar />
-      <div className='grid grid-cols-autofill-250 gap-10'>
-        {products.map((product, index) => {
+      {isLoading ? (
+        <ShimmerProductCards />
+      ) : products && products.length !== 0 ? (
+        products.map((product, index) => {
           return (
-            <Link key={index} to={`/products/${product.documentId}`}>
-              <ProductCard
-                title={product.title}
-                description={product.description}
-                image={product.image.url}
-                price={product.price}
-                rating={product.rating}
-              />
-            </Link>
+            <div className='grid grid-cols-autofill-250 gap-10'>
+              <Link key={index} to={`/products/${product.documentId}`}>
+                <ProductCard
+                  title={product.title}
+                  description={product.description}
+                  image={product.image.url}
+                  price={product.price}
+                  rating={product.rating}
+                />
+              </Link>
+            </div>
           );
-        })}
-      </div>
+        })
+      ) : (
+        <h2 className='text-3xl font-semibold m-auto mt-10'>
+          There are no Products available.
+        </h2>
+      )}
     </div>
   );
 }
