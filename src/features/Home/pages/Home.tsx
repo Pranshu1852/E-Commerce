@@ -60,11 +60,16 @@ function Home() {
             <div className='grid grid-cols-autofill-250 gap-10'>
               <Link key={index} to={`/products/${product.documentId}`}>
                 <ProductCard
-                  title={product.title}
-                  description={product.description}
-                  image={product.image.url}
-                  price={product.price}
-                  rating={product.rating}
+                  title={product.title ?? 'Product Title Not exist.'}
+                  description={
+                    product.description ?? 'Product description not exist.'
+                  }
+                  image={
+                    product.image.url ??
+                    'https://www.incathlab.com/images/products/default_product.png'
+                  }
+                  price={product.price ?? 'Price Not exist.'}
+                  rating={product.rating ?? 0}
                 />
               </Link>
             </div>
