@@ -1,28 +1,20 @@
-import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import useDebounce from '../../../hooks/useDebounce';
+import useFetch from '../../../hooks/useFetch';
 import { getProducts } from '../../../services/productApis';
 import type { FilterQueryType, ProductType } from '../../../types/ProductTypes';
 import FilterBar from '../components/FilterBar';
 import ProductCard from '../components/ProductCard';
 
 function Home() {
-  const [products, setProducts] = useState<ProductType[]>([]);
   const [searchParams] = useSearchParams();
-  const debounceFunc = useDebounce<FilterQueryType>(fetchProducts, 300);
-
-  async function fetchProducts(filterQuery: FilterQueryType) {
-    try {
-      const response = await getProducts(filterQuery);
-
-      setProducts(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
+  const debounceFunc = useDebounce(fetchProducts, 300);
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useFetch(async () => {
     const filterQuery: FilterQueryType = {
       search: searchParams.get('search') || '',
       category: searchParams.get('category') || '',
@@ -32,8 +24,27 @@ function Home() {
       sort: searchParams.get('sort') || '',
     };
 
-    debounceFunc(filterQuery);
+    return await debounceFunc(filterQuery);
   }, [searchParams]);
+
+  async function fetchProducts(
+    filterQuery: FilterQueryType
+  ): Promise<{ data: ProductType[] }> {
+    try {
+      const response = await getProducts(filterQuery);
+
+      return {
+        data: response.data,
+      };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  if (isLoading || isError || !products) {
+    return;
+  }
 
   return (
     <div className='flex flex-col gap-10 px-10 w-full'>

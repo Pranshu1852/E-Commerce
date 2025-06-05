@@ -1,28 +1,14 @@
-import { useParams } from 'react-router-dom';
+import { Skeleton } from '@mui/material';
 
-import useFetch from '../../../hooks/useFetch';
-import { getProductDetail } from '../../../services/productApis';
-import type { ProductType } from '../../../types/ProductTypes';
-
-function ProductDetails() {
-  const { id } = useParams();
-  const {
-    data: product,
-    isLoading,
-    isError,
-  } = useFetch<ProductType>(async () => {
-    if (!id) {
-      return;
-    }
-    return await getProductDetail(id);
-  }, [id]);
-
-  if (isLoading || isError || !product) {
-    return;
-  }
-
+function ShimmerProductDetails() {
   return (
     <div className='flex flex-col md:flex-row max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
+      <Skeleton
+        variant='rounded'
+        sx={{
+          width: '100%',
+        }}
+      />
       <img
         className='w-full object-cover md:min-w-[55%]'
         src={product.image.url}
@@ -54,4 +40,4 @@ function ProductDetails() {
   );
 }
 
-export default ProductDetails;
+export default ShimmerProductDetails;
