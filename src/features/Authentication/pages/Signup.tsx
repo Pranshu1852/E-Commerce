@@ -1,4 +1,7 @@
+import { useMutation } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
@@ -12,7 +15,26 @@ function Signup() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
-  const [isDisable, setIsDisable] = useState(false);
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: SignUpData) => handleSignup(data),
+    onSuccess: () => {
+      navigate('/', {
+        replace: true,
+      });
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError;
+      const status = axiosError.status;
+      if (status?.toString().startsWith('4')) {
+        toast.error('Email or Username already exists.');
+      } else if (status?.toString().startsWith('5')) {
+        toast.error('Server Error Please try later.');
+      } else {
+        toast.error('Something Went Wrong.');
+      }
+      console.error('Error: ', error);
+    },
+  });
   const formRefs = useRef<Record<string, InputRef | null>>({});
 
   if (storageHandler.getStorage('token')) {
@@ -53,13 +75,7 @@ function Signup() {
       return;
     }
 
-    setIsDisable(true);
-    const status = await handleSignup(data);
-    setIsDisable(false);
-
-    if (status === 200) {
-      navigate('/', { replace: true });
-    }
+    mutate(data);
   }
   return (
     <div className='h-screen flex'>
@@ -150,8 +166,8 @@ function Signup() {
         </Link>
         <button
           type='submit'
-          className={`py-2 px-4 font-semibold text-white ${isDisable ? 'bg-cyan-500' : 'bg-cyan-800'} rounded-md`}
-          disabled={isDisable}
+          className={`py-2 px-4 font-semibold text-white ${isPending ? 'bg-cyan-500' : 'bg-cyan-800'} rounded-md`}
+          disabled={isPending}
         >
           SignUp
         </button>

@@ -1,53 +1,22 @@
-import type { AxiosError } from 'axios';
-import toast from 'react-hot-toast';
-
 import type { LoginData, SignUpData } from '../types/Authtypes';
 import storageHandler from '../utils/storageHandler';
 
 import { instance } from './axiosInstance';
 
 export async function handleLogin(data: LoginData) {
-  try {
-    const response = await instance.post('/auth/local', data);
+  const response = await instance.post('/auth/local', data);
 
-    storageHandler.setStorage('token', response.data.jwt);
+  storageHandler.setStorage('token', response.data.jwt);
 
-    return response.status;
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    const status = axiosError.status;
-
-    if (status?.toString().startsWith('4')) {
-      toast.error('Please enter valid credentials.');
-    } else if (status?.toString().startsWith('5')) {
-      toast.error('Server Error Please try later.');
-    } else {
-      toast.error('Something Went Wrong.');
-    }
-
-    console.error('Error: ', axiosError);
-  }
+  return response.status;
 }
 
 export async function handleSignup(data: SignUpData) {
-  try {
-    const response = await instance.post('/auth/local/register', data);
+  const response = await instance.post('/auth/local/register', data);
 
-    storageHandler.setStorage('token', response.data.jwt);
+  storageHandler.setStorage('token', response.data.jwt);
 
-    return response.status;
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    const status = axiosError.status;
-    if (status?.toString().startsWith('4')) {
-      toast.error('Please enter valid credentials.');
-    } else if (status?.toString().startsWith('5')) {
-      toast.error('Server Error Please try later.');
-    } else {
-      toast.error('Something Went Wrong.');
-    }
-    console.error('Error: ', error);
-  }
+  return response.status;
 }
 
 export async function getUser(token: string) {

@@ -1,4 +1,7 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
+import { useRef, type FormEvent } from 'react';
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
@@ -11,7 +14,28 @@ import InputField from '../../Formvalidation/InputField';
 function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isDisable, setIsDisable] = useState(false);
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: LoginData) => handleLogin(data),
+    onSuccess: () => {
+      navigate('/', {
+        replace: true,
+      });
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError;
+      const status = axiosError.status;
+
+      if (status?.toString().startsWith('4')) {
+        toast.error('Please enter valid credentials.');
+      } else if (status?.toString().startsWith('5')) {
+        toast.error('Server Error Please try later.');
+      } else {
+        toast.error('Something Went Wrong.');
+      }
+
+      console.error('Error: ', axiosError);
+    },
+  });
   const formRefs = useRef<Record<string, InputRef | null>>({});
 
   if (storageHandler.getStorage('token')) {
@@ -44,13 +68,7 @@ function Login() {
       return;
     }
 
-    setIsDisable(true);
-    const status = await handleLogin(data);
-    setIsDisable(false);
-
-    if (status === 200) {
-      navigate('/', { replace: true });
-    }
+    mutate(data);
   }
 
   return (
@@ -102,8 +120,8 @@ function Login() {
         </Link>
         <button
           type='submit'
-          className={`py-2 px-4 font-semibold text-white ${isDisable ? 'bg-cyan-500' : 'bg-cyan-800'} rounded-md`}
-          disabled={isDisable}
+          className={`py-2 px-4 font-semibold text-white ${isPending ? 'bg-cyan-500' : 'bg-cyan-800'} rounded-md`}
+          disabled={isPending}
         >
           Login
         </button>
