@@ -1,3 +1,5 @@
+import { Skeleton, useTheme } from '@mui/material';
+import { useState } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
@@ -8,6 +10,8 @@ import ShimmerProductDetails from '../components/ShimmerProductDetails';
 
 function ProductDetails() {
   const { id } = useParams();
+  const [isImageLoad, setIsImageLoad] = useState(false);
+  const theme = useTheme();
   const { showBoundary } = useErrorBoundary();
   const {
     data: product,
@@ -34,13 +38,29 @@ function ProductDetails() {
 
   return (
     <div className='flex flex-col md:flex-row max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
+      {!isImageLoad && (
+        <Skeleton
+          variant='rounded'
+          sx={{
+            height: '400px',
+            [theme.breakpoints.up('md')]: {
+              minWidth: '55%',
+              height: '700px',
+            },
+          }}
+        />
+      )}
       <img
-        className='w-full object-cover md:min-w-[55%] h-[400px] md:h-[700px] rounded-md'
+        className={`w-full ${isImageLoad ? 'block' : 'hidden'} object-cover md:min-w-[55%] h-[400px] md:h-[700px] rounded-md`}
         src={
           product.image.url ??
           'https://www.incathlab.com/images/products/default_product.png'
         }
         alt={product.title ?? 'Not Available'}
+        loading='lazy'
+        onLoad={() => {
+          setIsImageLoad(true);
+        }}
       />
       <div className='flex flex-col gap-10'>
         <div className='flex flex-col gap-2'>

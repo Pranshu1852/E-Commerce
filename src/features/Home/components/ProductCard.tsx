@@ -1,4 +1,5 @@
-import { Rating } from '@mui/material';
+import { Rating, Skeleton } from '@mui/material';
+import { useState } from 'react';
 
 interface ProductCardProps {
   title: string;
@@ -15,14 +16,20 @@ function ProductCard({
   price,
   rating,
 }: ProductCardProps) {
+  const [isImageLoad, setIsImageLoad] = useState(false);
+
   return (
     <div className='flex flex-col shadow-md rounded-md hover:shadow-lg transition-all duration-150'>
       <div className='overflow-hidden'>
+        {!isImageLoad && <Skeleton variant='rounded' height={'288px'} />}
         <img
-          className='rounded-t-md h-72 object-cover w-full hover:scale-105 transition-all duration-150'
+          className={`rounded-t-md ${isImageLoad ? 'block' : 'hidden'} h-72 object-cover w-full hover:scale-105 transition-all duration-150`}
           src={image}
           alt={title}
           loading='lazy'
+          onLoad={() => {
+            setIsImageLoad(true);
+          }}
         />
       </div>
       <div className='flex flex-col gap-4 p-4'>
