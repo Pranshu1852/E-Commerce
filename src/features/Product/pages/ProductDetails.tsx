@@ -1,11 +1,10 @@
 import { Skeleton, useTheme } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
-import useFetch from '../../../hooks/useFetch';
 import { getProductDetail } from '../../../services/productApis';
-import type { ProductType } from '../../../types/ProductTypes';
 import ShimmerProductDetails from '../components/ShimmerProductDetails';
 
 function ProductDetails() {
@@ -17,16 +16,16 @@ function ProductDetails() {
     data: product,
     isLoading,
     isError,
-  } = useFetch<ProductType>(async () => {
-    if (!id) {
-      return;
-    }
-    return await getProductDetail(id);
-  }, [id]);
-
-  if (isError) {
-    showBoundary('Something Went Wrong.');
-  }
+    error,
+  } = useQuery({
+    queryKey: ['productDetail'],
+    queryFn: () => {
+      if (!id) {
+        return;
+      }
+      return getProductDetail(id);
+    },
+  });
 
   if (isLoading) {
     return <ShimmerProductDetails />;
@@ -34,6 +33,10 @@ function ProductDetails() {
 
   if (!product) {
     return;
+  }
+
+  if (isError) {
+    showBoundary(error);
   }
 
   return (

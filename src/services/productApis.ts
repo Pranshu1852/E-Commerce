@@ -1,4 +1,4 @@
-import type { FilterQueryType } from '../types/ProductTypes';
+import type { FilterQueryType, ProductType } from '../types/ProductTypes';
 import { filterEndPoint } from '../utils/endPointHandler';
 
 import { instance } from './axiosInstance';
@@ -13,11 +13,13 @@ export async function getProducts(filterQuery: FilterQueryType) {
   }
 }
 
-export async function getProductDetail(id: string) {
+export async function getProductDetail(
+  id: string
+): Promise<ProductType | undefined> {
   try {
     const response = await instance.get(`/products/${id}?populate=*`);
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error);
   }
