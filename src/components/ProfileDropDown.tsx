@@ -44,7 +44,7 @@ export default function ProfileDropDown() {
             <Avatar
               sx={{ width: 40, height: 40, backgroundColor: '#047c9195' }}
             >
-              <img src={profileImg} />
+              <img src={profileImg} alt='profile logo' />
             </Avatar>
           </IconButton>
         </Tooltip>
