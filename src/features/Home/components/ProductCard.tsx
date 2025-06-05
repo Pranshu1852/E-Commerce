@@ -23,7 +23,7 @@ function ProductCard({
       <div className='overflow-hidden'>
         {!isImageLoad && <Skeleton variant='rounded' height={'288px'} />}
         <img
-          className={`rounded-t-md ${isImageLoad ? 'block' : 'hidden'} h-72 object-cover w-full hover:scale-105 transition-all duration-150`}
+          className={`rounded-t-md ${isImageLoad ? 'block' : 'opacity-0'} h-72 object-cover w-full hover:scale-105 transition-all duration-150`}
           src={image}
           alt={title}
           loading='lazy'

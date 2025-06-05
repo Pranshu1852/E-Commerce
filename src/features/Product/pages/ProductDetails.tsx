@@ -51,7 +51,7 @@ function ProductDetails() {
         />
       )}
       <img
-        className={`w-full ${isImageLoad ? 'block' : 'hidden'} object-cover md:min-w-[55%] h-[400px] md:h-[700px] rounded-md`}
+        className={`w-full ${isImageLoad ? 'block' : 'opacity-0'} object-cover md:min-w-[55%] h-[400px] md:h-[700px] rounded-md`}
         src={
           product.image.url ??
           'https://www.incathlab.com/images/products/default_product.png'
