@@ -1,3 +1,11 @@
+export interface categoryType {
+  name: string;
+}
+
+export interface brandType {
+  name: string;
+}
+
 export interface ProductType {
   documentId: string;
   title: string;
@@ -7,12 +15,8 @@ export interface ProductType {
   image: {
     url: string;
   };
-  brand: {
-    name: string;
-  };
-  category: {
-    name: string;
-  };
+  brand: brandType;
+  category: categoryType;
 }
 
 export interface FilterQueryType {
@@ -22,4 +26,9 @@ export interface FilterQueryType {
   minPrice: string;
   maxPrice: string;
   sort: string;
+}
+
+export interface filterSelectOptionType {
+  label: string;
+  value: string;
 }

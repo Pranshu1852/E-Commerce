@@ -1,6 +1,7 @@
 import { useErrorBoundary } from 'react-error-boundary';
 import { Link, useSearchParams } from 'react-router-dom';
 
+import Loading from '../../../components/Loading';
 import useDebounce from '../../../hooks/useDebounce';
 import useFetch from '../../../hooks/useFetch';
 import { getProducts } from '../../../services/productApis';
@@ -48,7 +49,11 @@ function Home() {
     showBoundary('Something Went Wrong.');
   }
 
-  if (isLoading || !products) {
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!products) {
     return;
   }
 

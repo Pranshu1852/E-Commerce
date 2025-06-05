@@ -1,17 +1,15 @@
 import { MenuItem, TextField } from '@mui/material';
 import { useState, type ChangeEvent } from 'react';
 
-interface OptionsType {
-  label: string;
-  value: string;
-}
+import type { filterSelectOptionType } from '../../../types/ProductTypes';
 
 interface FilterSelectProps {
   label: string;
-  options: Array<OptionsType>;
+  options: Array<filterSelectOptionType>;
   value: string;
   name: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  isLoading?: boolean;
 }
 
 function FilterSelectField({
@@ -20,6 +18,7 @@ function FilterSelectField({
   value: initValue,
   name,
   onChange,
+  isLoading,
 }: FilterSelectProps) {
   const [value, setValue] = useState(initValue);
 
@@ -58,6 +57,7 @@ function FilterSelectField({
         {options.map((option) => {
           return <MenuItem value={option.value}>{option.label}</MenuItem>;
         })}
+        {isLoading && <li>Loading...</li>}
       </TextField>
     </div>
   );

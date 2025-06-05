@@ -1,6 +1,7 @@
 import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
+import Loading from '../../../components/Loading';
 import useFetch from '../../../hooks/useFetch';
 import { getProductDetail } from '../../../services/productApis';
 import type { ProductType } from '../../../types/ProductTypes';
@@ -23,14 +24,18 @@ function ProductDetails() {
     showBoundary('Something Went Wrong.');
   }
 
-  if (isLoading || !product) {
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!product) {
     return;
   }
 
   return (
     <div className='flex flex-col md:flex-row max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
       <img
-        className='w-full object-cover md:min-w-[55%]'
+        className='w-full object-cover md:min-w-[55%] h-[400px] md:h-[700px] rounded-md'
         src={product.image.url}
         alt={product.title}
       />

@@ -5,10 +5,11 @@ import { useErrorBoundary } from 'react-error-boundary';
 import { useSearchParams } from 'react-router-dom';
 
 import filterIcon from '../../../assets/filter.svg';
-import Loading from '../../../components/Loading';
 import useFetch from '../../../hooks/useFetch';
 import useToggle from '../../../hooks/useToggle';
 import { getAllBrands, getAllCategories } from '../../../services/productApis';
+import type { brandType, categoryType } from '../../../types/ProductTypes';
+import { mergeFilterSelectArray } from '../../../utils/filterUtils';
 
 import FilterSelectField from './FilterSelectField';
 
@@ -20,14 +21,14 @@ function FilterBar() {
     data: categories,
     isLoading: categoryLoading,
     isError: categoryError,
-  } = useFetch<Array<{ name: string }>>(async () => {
+  } = useFetch<Array<categoryType>>(async () => {
     return await getAllCategories();
   }, []);
   const {
     data: brands,
     isLoading: brandsLoading,
     isError: brandsError,
-  } = useFetch<Array<{ name: string }>>(async () => {
+  } = useFetch<Array<brandType>>(async () => {
     return await getAllBrands();
   }, []);
 
@@ -48,14 +49,6 @@ function FilterBar() {
     showBoundary('Something Went Wrong.');
   }
 
-  if (!categories || !brands) {
-    return;
-  }
-
-  if (brandsLoading || categoryLoading) {
-    return <Loading />;
-  }
-
   return (
     <div className='flex flex-col gap-5 p-5 shadow-[0px_0px_7px_-1px_rgba(0,0,0,0.2)] rounded-md'>
       <button
@@ -74,37 +67,33 @@ function FilterBar() {
             label='Category'
             name='category'
             value={searchParams.get('category') || 'all'}
-            options={[
-              {
-                label: 'All Categories',
-                value: 'all',
-              },
-              ...categories.map((category) => {
-                return {
-                  label: category.name,
-                  value: category.name,
-                };
-              }),
-            ]}
+            options={mergeFilterSelectArray(
+              [
+                {
+                  label: 'All Categories',
+                  value: 'all',
+                },
+              ],
+              categories
+            )}
             onChange={handleChange}
+            isLoading={categoryLoading}
           />
           <FilterSelectField
             label='Brand'
             name='brand'
             value={searchParams.get('brand') || 'all'}
-            options={[
-              {
-                label: 'All Brands',
-                value: 'all',
-              },
-              ...brands.map((brand) => {
-                return {
-                  label: brand.name,
-                  value: brand.name,
-                };
-              }),
-            ]}
+            options={mergeFilterSelectArray(
+              [
+                {
+                  label: 'All Brands',
+                  value: 'all',
+                },
+              ],
+              brands
+            )}
             onChange={handleChange}
+            isLoading={brandsLoading}
           />
           <div className='flex flex-col gap-2 w-full'>
             <label htmlFor=''>Price</label>
