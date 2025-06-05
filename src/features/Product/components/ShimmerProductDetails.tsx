@@ -1,40 +1,34 @@
-import { Skeleton } from '@mui/material';
+import { Skeleton, useTheme } from '@mui/material';
 
 function ShimmerProductDetails() {
+  const theme = useTheme();
   return (
-    <div className='flex flex-col md:flex-row max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
+    <div className='flex flex-col md:flex-row min-w-[70%] max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
       <Skeleton
         variant='rounded'
         sx={{
-          width: '100%',
+          height: '400px',
+          [theme.breakpoints.up('md')]: {
+            minWidth: '55%',
+            height: '700px',
+          },
         }}
       />
-      <img
-        className='w-full object-cover md:min-w-[55%]'
-        src={product.image.url}
-        alt={product.title}
-      />
-      <div className='flex flex-col gap-10'>
-        <div className='flex flex-col gap-2'>
-          <h2 className='text-3xl font-semibold leading-[50px]'>
-            {product.title}
-          </h2>
-          <div className='flex flex-row gap-2 items-center'>
+      <div className='flex flex-col gap-10 w-full'>
+        <div className='flex flex-col gap-2 w-full'>
+          <Skeleton variant='rounded' height={100} />
+          <div className='flex flex-row gap-2 items-center w-full'>
             <span className='text-white bg-cyan-700 py-1 px-2 rounded-md'>
-              {product.category.name}
+              <Skeleton variant='rounded' height={20} width={100} />
             </span>
             <span className='text-white bg-cyan-700 py-1 px-2 rounded-md'>
-              {product.brand.name}
+              <Skeleton variant='rounded' height={20} width={100} />
             </span>
           </div>
         </div>
 
-        <span className='text-5xl font-semibold text-cyan-500'>
-          &#8377; {product.price}
-        </span>
-        <p className='text-stone-500 font-medium text-lg leading-8 whitespace-pre text-wrap'>
-          {product.description}
-        </p>
+        <Skeleton variant='rounded' height={50} />
+        <Skeleton variant='rounded' height={200} />
       </div>
     </div>
   );
