@@ -8,11 +8,14 @@ import { filterEndPoint } from '../utils/endPointHandler';
 
 import { instance } from './axiosInstance';
 
-export async function getProducts(filterQuery: FilterQueryType) {
+export async function getProducts(
+  filterQuery: FilterQueryType
+): Promise<Array<ProductType> | undefined> {
   try {
     const endPoint = filterEndPoint(filterQuery);
     const response = await instance.get(`/products?${endPoint}`);
-    return response.data;
+
+    return response.data.data;
   } catch (error) {
     console.error(error);
   }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 function useDebounce<T, U>(func: (args: T) => Promise<U>, delay: number) {
   const timer = useRef<number | undefined>(undefined);
@@ -9,6 +9,7 @@ function useDebounce<T, U>(func: (args: T) => Promise<U>, delay: number) {
       timer.current = setTimeout(async () => {
         try {
           const response = await func(newArgs);
+
           resolve(response);
         } catch (error) {
           console.error(error);
@@ -17,12 +18,6 @@ function useDebounce<T, U>(func: (args: T) => Promise<U>, delay: number) {
       }, delay);
     });
   };
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
 
   return debounceFunc;
 }

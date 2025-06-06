@@ -18,7 +18,7 @@ function ProductDetails() {
     isError,
     error,
   } = useQuery({
-    queryKey: ['productDetail'],
+    queryKey: ['productDetail', id],
     queryFn: () => {
       if (!id) {
         return;
