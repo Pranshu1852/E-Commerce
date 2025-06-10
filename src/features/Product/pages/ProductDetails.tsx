@@ -40,7 +40,7 @@ function ProductDetails() {
   }
 
   return (
-    <div className='flex flex-col md:flex-row max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
+    <div className='flex flex-col md:flex-row w-[calc(100%-56px)] max-w-[1400px] p-5 m-7 lg:m-auto gap-10 shadow-md rounded-md'>
       {!isImageLoad && (
         <Skeleton
           variant='rounded'

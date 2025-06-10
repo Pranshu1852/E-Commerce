@@ -11,7 +11,7 @@ import NotFound from './components/NotFound';
 import Login from './features/Authentication/pages/Login';
 import Home from './features/Home/pages/Home';
 import MainLayout from './layouts/MainLayout';
-import type { StateType } from './store/store';
+import { storeSelector } from './store/store';
 import { sharedRef } from './utils/sharedRef';
 import AuthWrapper from './wrapper/AuthWrapper';
 
@@ -24,11 +24,7 @@ const Signup = lazy(() => import('./features/Authentication/pages/Signup'));
 function App() {
   const { i18n } = useTranslation();
 
-  const { language } = useSelector((state: StateType) => {
-    return {
-      language: state.general.language,
-    };
-  });
+  const { language } = useSelector(storeSelector);
 
   useEffect(() => {
     i18n.changeLanguage(language);

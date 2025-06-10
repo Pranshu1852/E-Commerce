@@ -3,16 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { generalAction } from '../store/generalSlice';
-import type { StateType } from '../store/store';
+import { storeSelector } from '../store/store';
 
 function LanguageSelector() {
   const { i18n } = useTranslation();
   const dispatch = useDispatch();
-  const { language } = useSelector((state: StateType) => {
-    return {
-      language: state.general.language,
-    };
-  });
+  const { language } = useSelector(storeSelector);
 
   function handleLanguageChange(lang: string) {
     dispatch(generalAction.setLanguage(lang));
