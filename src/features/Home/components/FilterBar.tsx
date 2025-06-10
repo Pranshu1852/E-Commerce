@@ -49,6 +49,7 @@ function FilterBar() {
 
   if (categoryError || brandsError) {
     showBoundary('Something Went Wrong.');
+    return;
   }
 
   return (

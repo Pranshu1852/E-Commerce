@@ -18,6 +18,7 @@ export async function getProducts(
     return response.data.data;
   } catch (error) {
     console.error(error);
+    throw new Error('Failed to fetch data');
   }
 }
 
@@ -30,6 +31,7 @@ export async function getProductDetail(
     return response.data.data;
   } catch (error) {
     console.error(error);
+    throw new Error('Failed to fetch data');
   }
 }
 
@@ -41,6 +43,7 @@ export async function getAllCategories(): Promise<
     return response.data.data;
   } catch (error) {
     console.error(error);
+    throw new Error('Failed to fetch data');
   }
 }
 
@@ -50,5 +53,6 @@ export async function getAllBrands(): Promise<Array<brandType> | undefined> {
     return response.data.data;
   } catch (error) {
     console.error(error);
+    throw new Error('Failed to fetch data');
   }
 }

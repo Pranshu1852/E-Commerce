@@ -16,7 +16,6 @@ function ProductDetails() {
     data: product,
     isLoading,
     isError,
-    error,
   } = useQuery({
     queryKey: ['productDetail', id],
     queryFn: () => {
@@ -31,12 +30,13 @@ function ProductDetails() {
     return <ShimmerProductDetails />;
   }
 
-  if (!product) {
+  if (isError) {
+    showBoundary('Something went worng.');
     return;
   }
 
-  if (isError) {
-    showBoundary(error);
+  if (!product) {
+    return;
   }
 
   return (

@@ -17,7 +17,6 @@ function Home() {
     data: products,
     isLoading,
     isError,
-    error,
   } = useQuery({
     queryKey: ['getallproducts', ...searchParams],
     queryFn: () => {
@@ -35,7 +34,8 @@ function Home() {
   });
 
   if (isError) {
-    showBoundary(error);
+    showBoundary('Something went wrong.');
+    return;
   }
 
   return (
