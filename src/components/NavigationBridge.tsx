@@ -1,9 +1,10 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { useImperativeHandle, type RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import type { SharedRef } from '../types/Reftype';
 import { sharedRef } from '../utils/sharedRef';
 
-const NavigationBridge = forwardRef((_, ref) => {
+const NavigationBridge = ({ ref }: { ref: RefObject<SharedRef | null> }) => {
   const navigate = useNavigate();
 
   useImperativeHandle(ref, () => ({
@@ -13,7 +14,7 @@ const NavigationBridge = forwardRef((_, ref) => {
   }));
 
   return null;
-});
+};
 
 export const NavigationBridgeComponent = () => {
   return <NavigationBridge ref={sharedRef} />;
