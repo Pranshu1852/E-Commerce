@@ -1,5 +1,4 @@
-import { Rating, Skeleton } from '@mui/material';
-import { useState } from 'react';
+import { Rating } from '@mui/material';
 
 interface ProductCardProps {
   title: string;
@@ -9,27 +8,19 @@ interface ProductCardProps {
   rating: number;
 }
 
-function ProductCard({
-  title,
-  description,
-  image,
-  price,
-  rating,
-}: ProductCardProps) {
-  const [isImageLoad, setIsImageLoad] = useState(false);
-
+function ProductCard({ title, description, price, rating }: ProductCardProps) {
   return (
     <div className='flex flex-col shadow-md rounded-md hover:shadow-lg transition-all duration-150'>
       <div className='overflow-hidden'>
-        {!isImageLoad && <Skeleton variant='rounded' height={'288px'} />}
         <img
-          className={`rounded-t-md ${isImageLoad ? 'block' : 'opacity-0'} h-72 object-cover w-full hover:scale-105 transition-all duration-150`}
-          src={image}
+          className={`rounded-t-md h-72 object-cover w-full hover:scale-105 transition-all duration-150`}
+          src={
+            'https://res.cloudinary.com/dvaxcfbor/image/upload/w_150,h_150,c_thumb/v1749036368/iphone_16_finish_select_202409_6_1inch_ultramarine_68ab2731fa.webp'
+          }
           alt={title}
-          loading='lazy'
-          onLoad={() => {
-            setIsImageLoad(true);
-          }}
+          loading='eager'
+          height={150}
+          width={150}
         />
       </div>
       <div className='flex flex-col gap-4 p-4'>
